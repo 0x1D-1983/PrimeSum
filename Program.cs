@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -33,11 +34,7 @@ namespace PrimeSum
                 return true;
             };
 
-            // Check if number is prime and add to total if yes
-            Parallel.For(0, limit, x =>
-            {
-                if (isPrime(x)) Interlocked.Add(ref total, x);
-            });
+            total = Enumerable.Range(0, limit).AsParallel().Where(isPrime).Sum(x => (long)x);
 
             stopwatch.Stop();
 
